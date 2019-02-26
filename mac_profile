@@ -1,0 +1,20 @@
+
+# MacPorts Installer addition on 2015-11-17_at_11:16:51: adding an appropriate PATH variable for use with MacPorts.
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+
+alias vim="nvim"
+
+export JAVA_HOME=$(/usr/libexec/java_home)
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+
+# Setting PATH for Python 3.7
+# The original version is saved in .profile.pysave
+PATH="/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/bin/:${PATH}"
+PATH="/usr/local/Cellar/python@2/2.7.15_2/Frameworks/Python.framework/Versions/2.7/bin:${PATH}"
+export PATH
+source ~/Project/bash_setup/setup.sh
