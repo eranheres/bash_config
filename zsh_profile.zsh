@@ -32,7 +32,7 @@ export PATH="$HOMEBREW_PREFIX/opt/ruby/bin:$PATH"
 # Used for xcodeproj on nvim
 export PATH="/Users/eranheres/projects/codelldb-aarch64-darwin:$PATH"
 export PATH="/Library/TeX/texbin:$PATH"
-
+export SECOND_BRAIN_DIR="/Users/eranheres/Library/Mobile Documents/iCloud~md~obsidian/Documents/second-brain"
 export KEYTIMEOUT=1
 
 # Change cursor shape for different vi modes.

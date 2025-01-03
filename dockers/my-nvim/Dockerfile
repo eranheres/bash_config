@@ -40,6 +40,8 @@ RUN --mount=type=secret,id=git,env=GITHUB_TOKEN \
 RUN ln -s ~/bash_config/p10k.zsh ~/.p10k.zsh
 RUN echo 'export PATH="$PATH:/opt/nvim-linux64/bin"' >> ~/.zshrc
 RUN echo 'source /root/bash_config/zsh_profile.zsh' >> ~/.zshrc
+RUN echo 'export SECOND_BRAIN_DIR="/root/second-brain"
+
 # Set zsh as the entry point
 WORKDIR /root
 CMD ["/bin/zsh", "-c", "/root/bash_config/dockers/my-nvim/init_docker.sh && exec /bin/zsh"]
