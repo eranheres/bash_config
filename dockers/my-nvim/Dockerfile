@@ -6,15 +6,7 @@ FROM ubuntu:22.04
 
 # Update packages and install what you need
 RUN apt-get update 
-RUN apt-get install -y zsh
-RUN apt-get install -y git 
-RUN apt-get install -y curl
-RUN apt-get install -y fzf 
-RUN apt-get install -y wget
-RUN apt-get install -y gcc 
-RUN apt-get install -y python3 
-RUN apt-get install -y python3-pip
-RUN apt-get install -y ripgrep
+RUN apt-get install -y zsh git curl fzf wget gcc python3 python3-pip ripgrep
 
 # RUN apt-get rm -rf /var/lib/apt/lists/*
 
@@ -45,10 +37,11 @@ RUN --mount=type=secret,id=git,env=GITHUB_TOKEN \
 
 
 # Create a soft link for Powerlevel10k configuration
-# RUN ln -s ~/bash_config/p10k.zsh ~/.p10k.zsh
+RUN ln -s ~/bash_config/p10k.zsh ~/.p10k.zsh
 RUN echo 'export PATH="$PATH:/opt/nvim-linux64/bin"' >> ~/.zshrc
+RUN echo 'source /root/bash_config/zsh_profile.zsh' >> ~/.zshrc
 # Set zsh as the entry point
 WORKDIR /root
-CMD "/root/bash_config/dockers/my-nvim/init_docker.sh"
+CMD ["/bin/zsh", "-c", "/root/bash_config/dockers/my-nvim/init_docker.sh && exec /bin/zsh"]
 #ENTRYPOINT "/bin/zsh"
 
