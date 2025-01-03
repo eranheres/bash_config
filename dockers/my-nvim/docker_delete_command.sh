@@ -1,1 +1,1 @@
-gcloud compute instances delete my-ubuntu-lts
+gcloud compute instances delete my-nvim
