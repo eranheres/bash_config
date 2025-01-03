@@ -26,6 +26,12 @@ echo "OPEN_API_KEY: YourKeyHere" >> $(pwd)/config.yml
 eval "$(/opt/homebrew/bin/brew shellenv)"
 brew bundle --file=$(pwd)/Brewfile
 
+# required for xcodeproj on nvim
+gem install xcodeproj
+pipx install pymobiledevice3
+pipx ensurepath
+
+# apply changes
 eval ~/.zshrc
 ```
 ### Fonts
@@ -40,7 +46,17 @@ git clone https://github.com/eranheres/nvim-general nvim-a
 git clone https://github.com/eranheres/nvim-python
 git clone https://github.com/eranheres/nvim-iosdev nvim-ios
 ```
+Append the sudoers file using: 
+```
+sudo visudo -f /etc/sudoers
+```
+
+with the following line:
+```
+eranheres ALL = (ALL) NOPASSWD: /Users/eranheres/.local/share/nvim-ios/lazy/xcodebuild.nvim/tools/remote_debugger
+```
+
 
 ## Run healthcheck
-brew
+brew doctor
 nvims
