@@ -30,8 +30,14 @@ RUN --mount=type=secret,id=git,env=GITHUB_TOKEN \
     git clone https://$(echo $GITHUB_TOKEN | tr -d '\n')@github.com/eranheres/nvim-obsidian.git ~/nvim-obsidian
 
 RUN --mount=type=secret,id=git,env=GITHUB_TOKEN \ 
-    git clone https://$(echo $GITHUB_TOKEN | tr -d '\n')@github.com/eranheres/bash_config.git ~/nvim-obsidian
+    git clone https://$(echo $GITHUB_TOKEN | tr -d '\n')@github.com/eranheres/bash_config.git ~/bash_config
+
+RUN echo 'POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true' >>! ~/.zshrc
+
+# Create a soft link for Powerlevel10k configuration
+RUN ln -s ~/bash_config/p10k.zsh ~/.p10k.zsh
 
 # Set zsh as the entry point
+WORKDIR /root
 ENTRYPOINT ["/usr/bin/zsh"]
 
