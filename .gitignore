@@ -1,2 +1,6 @@
 config.yml
 .idea
+tokens/nvim-service-account-key.json
+tokens/nvim-service-token.json
+zprofile
+Brewfile.lock.json
