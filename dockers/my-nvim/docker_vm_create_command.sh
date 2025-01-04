@@ -7,7 +7,7 @@ fi
 gcloud compute instances create-with-container my-nvim \
   --zone us-central1-b \
   --container-image docker.io/eranheres1/my-nvim:latest \
-  --container-restart-policy always \
+  --container-restart-policy never \
   --container-stdin --container-tty \
   --network-tier=STANDARD \
   --address=35.209.132.104 \
