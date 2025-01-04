@@ -6,7 +6,7 @@ FROM ubuntu:22.04
 
 # Update packages and install what you need
 RUN apt-get update 
-RUN apt-get install -y zsh git curl fzf wget gcc python3 python3-pip ripgrep
+RUN apt-get install -y zsh git curl fzf wget gcc python3 python3-pip ripgrep cron
 
 # Get my repos
 RUN --mount=type=secret,id=git,env=GITHUB_TOKEN \ 
@@ -46,8 +46,16 @@ RUN export SECOND_BRAIN_DIR="/root/second-brain"
 RUN NVIM_APPNAME=nvim-obsidian /opt/nvim-linux64/bin/nvim --headless '+Lazy! sync' +qa
 RUN NVIM_APPNAME=nvim-obsidian /opt/nvim-linux64/bin/nvim --headless '+Lazy! sync' +qa
 
+# Cron to update git
+RUN echo "* * * * * /roo/bash_config/dockers/my-nvim/obs_push.py /root/second-brain >> /var/log/cron.log 2>&1" > /etc/cron.d/my-cron-job
+RUN chmod 0644 /etc/cron.d/my-cron-job
+RUN crontab /etc/cron.d/my-cron-job
+RUN touch /var/log/cron.log
+
+
 # Set zsh as the entry point
 WORKDIR /root
-CMD ["/bin/zsh", "-c", "/root/bash_config/dockers/my-nvim/init_docker.sh && exec /bin/zsh"]
+CMD /bin/bash -c "cron && /root/bash_config/dockers/my-nvim/init_docker.sh && exec /bin/zsh"
+#CMD ["/bin/zsh", "-c", "/root/bash_config/dockers/my-nvim/init_docker.sh && exec /bin/zsh"]
 #ENTRYPOINT "/bin/zsh"
 
