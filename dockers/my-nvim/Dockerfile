@@ -9,6 +9,7 @@ RUN apt-get update
 RUN apt-get install -y zsh git curl fzf wget gcc python3 python3-pip ripgrep 
 RUN apt-get install -y cron
 
+RUN git config --global user.email "dockernvim@eran.com"
 # Get my repos
 RUN --mount=type=secret,id=git,env=GITHUB_TOKEN \ 
     git clone https://$(echo $GITHUB_TOKEN | tr -d '\n')@github.com/eranheres/nvim-obsidian.git ~/.config/nvim-obsidian
@@ -26,6 +27,7 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master
 # Install Powerlevel10k theme
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k && \
     sed -i 's/ZSH_THEME="[^"]*"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
+
 
 # Install lazygit
 ENV LAZYGIT_VERSION=v0.44.1
