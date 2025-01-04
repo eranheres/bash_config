@@ -19,7 +19,12 @@ jobs:
         gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
         gcloud config set project nvims-446813
 
-    - name: Run init_vm.sh
+    - name: Create machine 
       run: |
         chmod +x ./dockers/my-nvim/docker_vm_create_command.sh 
         ./dockers/my-nvim/docker_vm_create_command.sh ${{secrets.REPO_TOKEN}}
+
+    - name: Setup host machine 
+      run: |
+        chmod +x ./dockers/my-nvim/setup_host.sh 
+        ./dockers/my-nvim/setup_host.sh
