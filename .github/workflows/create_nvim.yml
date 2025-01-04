@@ -1,35 +1,25 @@
+name: Run init_vm Script
 
-# This is a basic workflow that is manually triggered
-
-name: Create VM 
-
-# Controls when the action will run. Workflow runs when manually triggered using the UI
-# or API.
 on:
-  workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'Create a VM'
-        # Default value if no value is explicitly provided
-        default: 'World'
-        # Input has to be provided for the workflow to run
-        required: true
-        # The data type of the input
-        type: string
+  workflow_dispatch: # Manual trigger
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "greet"
-  greet:
-    # The type of runner that the job will run on
+  run-init-vm:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Runs a single command using the runners shell
-    - name: ls files 
-      run: ls
-    - name: Send greeting
-      run: echo "Hello ${{ inputs.name }}"
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Authenticate to Google Cloud
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/gcloud-key.json
+      run: |
+        echo "${{ secrets.GCLOUD_SERVICE_KEY }}" > $GOOGLE_APPLICATION_CREDENTIALS
+        gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+        gcloud config set project YOUR_PROJECT_ID
+
+    - name: Run init_vm.sh
+      run: |
+        chmod +x ./init_vm.sh
+        ./dockers/my-nvim/docker_vm_create_command.sh
