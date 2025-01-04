@@ -5,3 +5,5 @@ tokens/nvim-service-token.json
 zprofile
 Brewfile.lock.json
 tokens/github-token.txt
+dockers/tokens/github-token.txt
+dockers/tokens
