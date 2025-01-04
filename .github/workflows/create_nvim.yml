@@ -21,5 +21,5 @@ jobs:
 
     - name: Run init_vm.sh
       run: |
-        chmod +x ./dockers/my-nvim/docker_vm_create_command.sh ${{secrets.REPO_TOKEN}}
-        ./dockers/my-nvim/docker_vm_create_command.sh
+        chmod +x ./dockers/my-nvim/docker_vm_create_command.sh 
+        ./dockers/my-nvim/docker_vm_create_command.sh ${{secrets.REPO_TOKEN}}
