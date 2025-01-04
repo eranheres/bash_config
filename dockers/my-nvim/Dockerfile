@@ -6,13 +6,14 @@ FROM ubuntu:22.04
 
 # Update packages and install what you need
 RUN apt-get update 
-RUN apt-get install -y zsh git curl fzf wget gcc python3 python3-pip ripgrep cron
+RUN apt-get install -y zsh git curl fzf wget gcc python3 python3-pip ripgrep 
+RUN apt-get install -y cron
 
 # Get my repos
 RUN --mount=type=secret,id=git,env=GITHUB_TOKEN \ 
-    git clone https://$(echo $GITHUB_TOKEN | tr -d '\n')@github.com/eranheres/bash_config.git ~/bash_config
-RUN --mount=type=secret,id=git,env=GITHUB_TOKEN \ 
     git clone https://$(echo $GITHUB_TOKEN | tr -d '\n')@github.com/eranheres/nvim-obsidian.git ~/.config/nvim-obsidian
+RUN --mount=type=secret,id=git,env=GITHUB_TOKEN \ 
+    git clone https://$(echo $GITHUB_TOKEN | tr -d '\n')@github.com/eranheres/bash_config.git ~/bash_config
 
 
 RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
@@ -32,8 +33,6 @@ RUN curl -LO https://github.com/jesseduffield/lazygit/releases/download/v0.44.0/
 RUN tar xf lazygit_0.44.0_Linux_x86_64.tar.gz lazygit
 RUN install lazygit -D -t /usr/local/bin/
 
-
-
 RUN echo 'POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true' >>! ~/.zshrc
 # Create a soft link for Powerlevel10k configuration
 RUN ln -s ~/bash_config/p10k.zsh ~/.p10k.zsh
@@ -47,7 +46,7 @@ RUN NVIM_APPNAME=nvim-obsidian /opt/nvim-linux64/bin/nvim --headless '+Lazy! syn
 RUN NVIM_APPNAME=nvim-obsidian /opt/nvim-linux64/bin/nvim --headless '+Lazy! sync' +qa
 
 # Cron to update git
-RUN echo "* * * * * /roo/bash_config/dockers/my-nvim/obs_push.py /root/second-brain >> /var/log/cron.log 2>&1" > /etc/cron.d/my-cron-job
+RUN echo "* * * * * python3 /root/bash_config/dockers/my-nvim/obs_push.py /root/second-brain >> /var/log/cron.log 2>&1" > /etc/cron.d/my-cron-job
 RUN chmod 0644 /etc/cron.d/my-cron-job
 RUN crontab /etc/cron.d/my-cron-job
 RUN touch /var/log/cron.log

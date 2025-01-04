@@ -12,38 +12,49 @@ def run_command(command):
 
 def is_repo_modified():
     """
-    Checks if the Git repository has been modified.
+    Checks if the Git repository has been modified locally.
     """
     output, _ = run_command("git status --porcelain")
     return len(output) > 0
 
-def pull_and_rebase():
+def commit_changes():
     """
-    Pulls the latest changes and rebases the current branch.
-    If conflicts occur, accepts remote changes.
+    Commits local changes to the repository.
     """
-    _, returncode = run_command("git pull --rebase")
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    commit_message = f"Auto commit on {current_time}"
+    run_command("git add .")
+    run_command(f"git commit -m \"{commit_message}\"")
+    print("Local changes committed.")
+
+def pull_and_merge():
+    """
+    Pulls the latest changes from the remote repository and merges them.
+    If conflicts occur, resolves them by accepting remote changes.
+    """
+    _, returncode = run_command("git pull --no-rebase")
     if returncode != 0:
         print("Conflicts detected. Resolving by accepting remote changes...")
         run_command("git checkout --theirs .")
         run_command("git add .")
-        run_command("git rebase --continue")
+        run_command("git commit -m \"Resolved conflicts by accepting remote changes\"")
+    print("Remote changes pulled and merged.")
 
-def commit_and_push_changes():
+def push_changes():
     """
-    Commits and pushes changes to the remote repository.
+    Pushes local changes to the remote repository.
     """
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    commit_message = f"Auto commit on {current_time}"
-    
-    # Add all changes
-    run_command("git add .")
-    
-    # Commit changes
-    run_command(f"git commit -m \"{commit_message}\"")
-    
-    # Push changes to remote repository
     run_command("git push")
+    print("Local changes pushed to remote repository.")
+
+def is_remote_updated():
+    """
+    Checks if the remote repository has updates.
+    """
+    run_command("git fetch")
+    local_hash, _ = run_command("git rev-parse HEAD")
+    remote_hash, _ = run_command("git rev-parse @{u}")
+    return local_hash != remote_hash
 
 def main():
     # Get the path to the Git repository from command line arguments
@@ -53,13 +64,20 @@ def main():
     
     repo_path = sys.argv[1]
     os.chdir(repo_path)
-    
-    # Check if there are modifications
-    if is_repo_modified():
-        pull_and_rebase()
-        commit_and_push_changes()
+
+    local_changed = is_repo_modified()
+    remote_updated = is_remote_updated()
+
+    if local_changed:
+        commit_changes()
+
+    if remote_updated:
+        pull_and_merge()
+
+    if local_changed:
+        push_changes()
     else:
-        print("No changes detected. Nothing to commit.")
+        print("No changes detected locally or remotely. Nothing to commit or push.")
 
 if __name__ == "__main__":
     main()
