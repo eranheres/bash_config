@@ -3,6 +3,13 @@ import subprocess
 import sys
 from datetime import datetime
 
+def log_message(message):
+    """
+    Logs a message with the current date and time.
+    """
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_message(f"[{current_time}] {message}")
+
 def run_command(command):
     """
     Runs a shell command and returns its output.
@@ -25,7 +32,7 @@ def commit_changes():
     commit_message = f"Auto commit on {current_time}"
     run_command("git add .")
     run_command(f"git commit -m \"{commit_message}\"")
-    print("Local changes committed.")
+    log_message("Local changes committed.")
 
 def pull_and_merge():
     """
@@ -34,18 +41,18 @@ def pull_and_merge():
     """
     _, returncode = run_command("git pull --no-rebase")
     if returncode != 0:
-        print("Conflicts detected. Resolving by accepting remote changes...")
+        log_message("Conflicts detected. Resolving by accepting remote changes...")
         run_command("git checkout --theirs .")
         run_command("git add .")
         run_command("git commit -m \"Resolved conflicts by accepting remote changes\"")
-    print("Remote changes pulled and merged.")
+    log_message("Remote changes pulled and merged.")
 
 def push_changes():
     """
     Pushes local changes to the remote repository.
     """
     run_command("git push")
-    print("Local changes pushed to remote repository.")
+    log_message("Local changes pushed to remote repository.")
 
 def is_remote_updated():
     """
@@ -59,7 +66,7 @@ def is_remote_updated():
 def main():
     # Get the path to the Git repository from command line arguments
     if len(sys.argv) < 2:
-        print("Usage: python script.py /path/to/your/repository")
+        log_message("Usage: python script.py /path/to/your/repository")
         sys.exit(1)
     
     repo_path = sys.argv[1]
@@ -77,7 +84,7 @@ def main():
     if local_changed:
         push_changes()
     else:
-        print("No changes detected locally or remotely. Nothing to commit or push.")
+        log_message("No changes detected locally or remotely. Nothing to commit or push.")
 
 if __name__ == "__main__":
     main()
