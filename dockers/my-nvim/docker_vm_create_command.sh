@@ -1,4 +1,5 @@
 ## if parameter provided, set it as github token otherwise use the default one
+set -x
 if [ -z "$1" ]; then
   REPO_TOKEN=$(cat ../tokens/github-token.txt)
 else
