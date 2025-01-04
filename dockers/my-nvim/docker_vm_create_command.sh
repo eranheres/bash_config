@@ -9,5 +9,6 @@ gcloud compute instances create-with-container my-nvim \
   --container-image docker.io/eranheres1/my-nvim:latest \
   --container-restart-policy always \
   --container-stdin --container-tty \
+  --network-tier=STANDARD \
   --address=35.209.132.104 \
   --container-env GITHUB_TOKEN=$REPO_TOKEN
