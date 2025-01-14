@@ -2,6 +2,8 @@ name: Delete NVIM machine
 
 on:
   workflow_dispatch: # Manual trigger
+  schedule:
+    - cron: '0 21 * * *' # Run at 21:00 UTC daily
 
 jobs:
   run-init-vm:
