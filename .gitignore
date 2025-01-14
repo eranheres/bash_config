@@ -7,3 +7,4 @@ Brewfile.lock.json
 tokens/github-token.txt
 dockers/tokens/github-token.txt
 dockers/tokens
+keys.sh

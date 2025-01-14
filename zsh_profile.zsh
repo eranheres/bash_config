@@ -8,12 +8,13 @@ source $HOMEBREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme
 
 export OPENAI_API_KEY=$(grep OPENAI_API_KEY $(dirname "$0")/config.yml | cut -d' ' -f2)
 export SERPER_API_KEY=$(grep SERPER_API_KEY $(dirname "$0")/config.yml | cut -d' ' -f2)
+export ANTHROPIC_API_KEY=$(grep ANTHROPIC_API_KEY $(dirname "$0")/config.yml | cut -d' ' -f2)
 
 [ -f ~/.lazyshell.zsh ] && source ~/.lazyshell.zsh
 alias nvenv='python3 -m venv .venv && source .venv/bin/activate && pip install --upgrade pip'
 alias avenv='source .venv/bin/activate'
 
-alias n='NVIM_APPNAME=nvim-a nvim'
+alias n='NVIM_APPNAME=nvim-python \nvim'
 alias obs='cd /Users/eranheres/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/second-brain; NVIM_APPNAME=nvim-obsidian nvim .'
 alias nvim-a='NVIM_APPNAME=nvim-a nvim'
 alias nvim-b='NVIM_APPNAME=nvim-b \nvim'
@@ -67,4 +68,5 @@ bindkey '^K' fzf-history-widget
 
 
 # Customize prompt
+[[ ! -f ./keys.sh ]] || source ./keys.zsh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
